@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GWA Calculator</title>
+    <!--<link rel="stylesheet" href="/Projects/style.css">-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>GWA Calculator</h1>
+    </header>
+
+    <div class="main-content" id="main-content">
+        <table class="subject-fields">
+
+            <tr>
+                <td>subject 1</td>
+                <td><input type="text" oninput="acceptsNumOnly(this)"></td>
+                <td><span id="percentage">99%</span></td>
+            </tr>
+            <tr>
+                <td>subject 2</td>
+                <td><input type="text" oninput="acceptsNumOnly(this)"></td>
+                <!--<td><img src="/Projects/Add New.png" alt="" id="add-btn"><span id="add-rows">add rows</span></td>-->
+                <td><img src="Add New.png" alt="" id="add-btn"><span id="add-rows">add rows</span></td>
+            </tr>
+
+            <tr>
+                <td>subject 3</td>
+                <td><input type="text" oninput="acceptsNumOnly(this)"></td>
+                <!--<td><img src="/Projects/Equals.png" alt="" id="reset-btn"><span id="reset">reset</span></td>-->
+                <td><img src="Equals.png" alt="" id="reset-btn"><span id="reset">reset</span></td>
+            </tr>
+
+            <tr>
+                <td>subject 4</td>
+                <td><input type="text" oninput="acceptsNumOnly(this)"></td>
+                <!--<td><img src="/Projects/Equals.png" alt="" id="comp-btn"><span id="compute">compute</span></td>-->
+                <td><img src="Equals.png" alt="" id="comp-btn"><span id="compute">compute</span></td>
+            </tr>
+
+
+        </table>
+    </div>
+
+
+    <script>
+        function updateClonedRow(clonedRow) {
+            const elementsToRemove = ['#compute', '#comp-btn'];
+            const inputFields = clonedRow.querySelectorAll('input[type="text"]');
+
+            inputFields.forEach((input) => {
+                input.oninput = null;
+                input.removeAttribute('placeholder');
+            });
+
+            elementsToRemove.forEach((element) => {
+                const elementToRemove = clonedRow.querySelector(element);
+                if (elementToRemove) {
+                    elementToRemove.remove();
+                }
+            });
+        }
+    
+        function addNewRow() {
+            
+            const table = document.querySelector('.subject-fields');
+            
+            const lastRow = table.rows[table.rows.length - 1];
+            const newRow = lastRow.cloneNode(true);
+            
+            const lastSubject = parseInt(lastRow.querySelector('td').textContent.match(/\d+/)[0]);
+            const newSubject = lastSubject + 1;
+            newRow.querySelector('td').textContent = `subject ${newSubject}`;
+
+            updateClonedRow(newRow);
+            
+            newRow.querySelector('input').value = '';
+    
+            table.appendChild(newRow);
+
+            updateMainContentPadding();
+        }
+
+        function updateMainContentPadding() {
+            const mainContent = document.getElementById('main-content');
+            const table = document.querySelector('.subject-fields');
+
+            const footerHeight = 20; 
+
+            const tableHeight = table.offsetHeight;
+            mainContent.style.paddingBottom = `20px`;
+        }
+
+        function resetInputFields() {
+            const inputFields = document.querySelectorAll('.subject-fields input[type="text"]');
+            inputFields.forEach((input) => {
+                input.value = '';
+            });
+        }
+
+        function acceptsNumOnly(inputField) {
+            const inputValue = inputField.value.trim();
+            const isValidNumber = !isNaN(inputValue) && inputValue !== '';
+
+            if (!isValidNumber) {
+                inputField.setAttribute('placeholder', 'Number only');
+                inputField.value = '';
+            } else {
+                inputField.removeAttribute('placeholder');
+            }
+        }
+
+        document.getElementById('reset-btn').addEventListener('click', resetInputFields);
+        document.getElementById('reset').addEventListener('click', resetInputFields);
+
+        document.getElementById('add-rows').addEventListener('click', addNewRow);
+        document.getElementById('add-btn').addEventListener('click', addNewRow);
+    </script>
+
+    <footer>
+
+        <table class="github-table">
+            <ul>
+                <li class="github-li" style="list-style-type: none;"><img class="github" src="/Projects/github (1).png" alt=""><a class="link-hub" href="http://www.github.com/naomitng" target="_blank">github.com/naomitng</a></li>
+            </ul>
+        </table>
+    </footer>
+</body>
+</html>
